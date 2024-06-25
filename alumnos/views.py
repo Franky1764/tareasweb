@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from .models import Alumno,Genero
+
+from .forms import GeneroForm
 
 # Create your views here.
 class persona:
@@ -10,7 +13,7 @@ class persona:
 
 
 def index(request):
-    hijo=persona("Juan Perez", "7")
+    hijo=persona("Vicente Saavedra", "7")
 
     lista=["Lazaña", "Charquican", "Porotos granado"]
 
@@ -143,3 +146,16 @@ def crud_generos(request):
         
     
         
+def generosAdd(request):
+    print("controlador es un post...")
+    form = GeneroForm(request.POST)
+    if form.is_valid:
+        print ("estoy en agregar, is_valid")
+        form.save()
+        
+        
+        #limpiar form
+        form=GeneroForm()
+        
+        context={'Mensaje': "OK, datos grabados...", "form":form}
+        return render(request,"alumnos/generos_add.html",context)
